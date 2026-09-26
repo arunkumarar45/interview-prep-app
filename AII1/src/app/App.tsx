@@ -284,11 +284,10 @@ function Sidebar({ current, navigate, streak, user }: { current: Screen; navigat
             <button
               key={screen}
               onClick={() => navigate(screen as Screen)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 text-left cursor-pointer ${
-                active
-                  ? "bg-[#4f6ef7]/15 text-[#818cf8] border border-[#4f6ef7]/20"
-                  : "text-white/50 hover:text-white/80 hover:bg-white/5"
-              }`}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 text-left cursor-pointer ${active
+                ? "bg-[#4f6ef7]/15 text-[#818cf8] border border-[#4f6ef7]/20"
+                : "text-white/50 hover:text-white/80 hover:bg-white/5"
+                }`}
             >
               <Icon className={`w-4 h-4 ${active ? "text-[#4f6ef7]" : ""}`} />
               {label}
@@ -1301,11 +1300,10 @@ function QuizSelectScreen({
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 py-1 rounded-lg text-xs whitespace-nowrap cursor-pointer transition-all ${
-                    selectedCategory === cat
-                      ? "bg-[#4f6ef7] text-white font-medium shadow-md shadow-[#4f6ef7]/20"
-                      : "bg-white/4 text-white/50 hover:bg-white/8 hover:text-white"
-                  }`}
+                  className={`px-3 py-1 rounded-lg text-xs whitespace-nowrap cursor-pointer transition-all ${selectedCategory === cat
+                    ? "bg-[#4f6ef7] text-white font-medium shadow-md shadow-[#4f6ef7]/20"
+                    : "bg-white/4 text-white/50 hover:bg-white/8 hover:text-white"
+                    }`}
                 >
                   {cat}
                 </button>
@@ -1320,11 +1318,10 @@ function QuizSelectScreen({
                   <button
                     key={t.id}
                     onClick={() => setSelectedTopic(isSelected ? null : t.name)}
-                    className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
-                      isSelected
-                        ? "border-[#4f6ef7] bg-[#4f6ef7]/15 ring-1 ring-[#4f6ef7]/40 shadow-lg"
-                        : "border-white/8 bg-white/3 hover:border-white/15 hover:bg-white/5"
-                    }`}
+                    className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${isSelected
+                      ? "border-[#4f6ef7] bg-[#4f6ef7]/15 ring-1 ring-[#4f6ef7]/40 shadow-lg"
+                      : "border-white/8 bg-white/3 hover:border-white/15 hover:bg-white/5"
+                      }`}
                   >
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
@@ -1370,13 +1367,12 @@ function QuizSelectScreen({
                 <button
                   key={d}
                   onClick={() => setDifficulty(d)}
-                  className={`flex-1 py-2.5 rounded-xl text-sm font-semibold border capitalize cursor-pointer transition-all ${
-                    difficulty === d
-                      ? d === "easy" ? "bg-green-500/15 border-green-500/30 text-green-400"
-                        : d === "medium" ? "bg-amber-500/15 border-amber-500/30 text-amber-400"
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-semibold border capitalize cursor-pointer transition-all ${difficulty === d
+                    ? d === "easy" ? "bg-green-500/15 border-green-500/30 text-green-400"
+                      : d === "medium" ? "bg-amber-500/15 border-amber-500/30 text-amber-400"
                         : "bg-red-500/15 border-red-500/30 text-red-400"
-                      : "bg-white/3 border-white/8 text-white/50 hover:border-white/15"
-                  }`}
+                    : "bg-white/3 border-white/8 text-white/50 hover:border-white/15"
+                    }`}
                 >
                   {d}
                 </button>
@@ -1392,11 +1388,10 @@ function QuizSelectScreen({
                 <button
                   key={count}
                   onClick={() => setQuestionCount(count)}
-                  className={`flex-1 py-2.5 rounded-xl text-sm font-semibold border cursor-pointer transition-all ${
-                    questionCount === count
-                      ? "bg-[#4f6ef7]/15 border-[#4f6ef7]/40 text-[#818cf8]"
-                      : "bg-white/3 border-white/8 text-white/50 hover:border-white/15"
-                  }`}
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-semibold border cursor-pointer transition-all ${questionCount === count
+                    ? "bg-[#4f6ef7]/15 border-[#4f6ef7]/40 text-[#818cf8]"
+                    : "bg-white/3 border-white/8 text-white/50 hover:border-white/15"
+                    }`}
                 >
                   {count} Qs
                 </button>
@@ -1481,11 +1476,10 @@ function QuizProgressScreen({
             {Array.from({ length: total }).map((_, i) => (
               <div
                 key={i}
-                className={`h-1 flex-1 rounded-full transition-all ${
-                  i < qIndex ? "bg-[#2dd4bf]"
+                className={`h-1 flex-1 rounded-full transition-all ${i < qIndex ? "bg-[#2dd4bf]"
                   : i === qIndex ? "bg-[#4f6ef7]"
-                  : "bg-white/8"
-                }`}
+                    : "bg-white/8"
+                  }`}
               />
             ))}
           </div>
@@ -1501,15 +1495,13 @@ function QuizProgressScreen({
               <button
                 key={i}
                 onClick={() => onAnswer(qIndex, i, "")}
-                className={`w-full text-left px-5 py-4 rounded-xl border transition-all cursor-pointer text-sm ${
-                  currentAnswer.selectedIndex === i
-                    ? "border-[#4f6ef7] bg-[#4f6ef7]/10 text-white"
-                    : "border-white/8 bg-white/3 text-white/70 hover:border-white/15 hover:text-white"
-                }`}
+                className={`w-full text-left px-5 py-4 rounded-xl border transition-all cursor-pointer text-sm ${currentAnswer.selectedIndex === i
+                  ? "border-[#4f6ef7] bg-[#4f6ef7]/10 text-white"
+                  : "border-white/8 bg-white/3 text-white/70 hover:border-white/15 hover:text-white"
+                  }`}
               >
-                <span className={`inline-flex w-6 h-6 rounded-full border mr-3 text-xs items-center justify-center font-['JetBrains_Mono'] shrink-0 ${
-                  currentAnswer.selectedIndex === i ? "border-[#4f6ef7] bg-[#4f6ef7] text-white" : "border-white/20 text-white/40"
-                }`}>
+                <span className={`inline-flex w-6 h-6 rounded-full border mr-3 text-xs items-center justify-center font-['JetBrains_Mono'] shrink-0 ${currentAnswer.selectedIndex === i ? "border-[#4f6ef7] bg-[#4f6ef7] text-white" : "border-white/20 text-white/40"
+                  }`}>
                   {String.fromCharCode(65 + i)}
                 </span>
                 {opt}
@@ -1700,8 +1692,8 @@ function QuizResultsScreen({
                   {r.ungraded
                     ? <MessageSquare className="w-4 h-4 text-blue-400 shrink-0" />
                     : r.ok
-                    ? <CheckCircle2 className="w-4 h-4 text-green-400 shrink-0" />
-                    : <XCircle className="w-4 h-4 text-red-400 shrink-0" />}
+                      ? <CheckCircle2 className="w-4 h-4 text-green-400 shrink-0" />
+                      : <XCircle className="w-4 h-4 text-red-400 shrink-0" />}
                   <span className="flex-1 text-sm text-white truncate">{r.q}</span>
                   <TopicTag topic={r.topic} />
                   {expanded === i ? <ChevronUp className="w-3.5 h-3.5 text-white/30" /> : <ChevronDown className="w-3.5 h-3.5 text-white/30" />}
@@ -1828,10 +1820,10 @@ function InterviewSetupScreen({
       mode === "technical"
         ? topic
         : mode === "resume"
-        ? (selectedResume?.form_data?.contactInfo?.fullName
+          ? (selectedResume?.form_data?.contactInfo?.fullName
             ? `${selectedResume.form_data.contactInfo.fullName}'s Resume`
             : "Resume Deep-Dive")
-        : mode;
+          : mode;
     onStart(mode, effectiveTopic, resumeText);
     navigate("interview-live");
   };
@@ -1857,9 +1849,8 @@ function InterviewSetupScreen({
               <button
                 key={id}
                 onClick={() => setMode(id as typeof mode)}
-                className={`p-4 rounded-2xl border-2 text-left transition-all cursor-pointer flex flex-col justify-between ${
-                  mode === id ? "border-[#4f6ef7] bg-[#4f6ef7]/10 ring-1 ring-[#4f6ef7]/30" : "border-white/8 bg-[#0d1730] hover:border-white/15"
-                }`}
+                className={`p-4 rounded-2xl border-2 text-left transition-all cursor-pointer flex flex-col justify-between ${mode === id ? "border-[#4f6ef7] bg-[#4f6ef7]/10 ring-1 ring-[#4f6ef7]/30" : "border-white/8 bg-[#0d1730] hover:border-white/15"
+                  }`}
               >
                 <div>
                   <Icon className={`w-5 h-5 mb-2.5 ${mode === id ? "text-[#818cf8]" : "text-white/40"}`} />
@@ -1892,11 +1883,10 @@ function InterviewSetupScreen({
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 py-1 rounded-lg text-xs whitespace-nowrap cursor-pointer transition-all ${
-                    selectedCategory === cat
-                      ? "bg-[#4f6ef7] text-white font-medium"
-                      : "bg-white/4 text-white/50 hover:bg-white/8 hover:text-white"
-                  }`}
+                  className={`px-3 py-1 rounded-lg text-xs whitespace-nowrap cursor-pointer transition-all ${selectedCategory === cat
+                    ? "bg-[#4f6ef7] text-white font-medium"
+                    : "bg-white/4 text-white/50 hover:bg-white/8 hover:text-white"
+                    }`}
                 >
                   {cat}
                 </button>
@@ -1910,11 +1900,10 @@ function InterviewSetupScreen({
                   <button
                     key={t.id}
                     onClick={() => setTopic(t.name)}
-                    className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
-                      isSelected
-                        ? "border-[#4f6ef7] bg-[#4f6ef7]/15 ring-1 ring-[#4f6ef7]/40 shadow-lg"
-                        : "border-white/8 bg-white/3 hover:border-white/15"
-                    }`}
+                    className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${isSelected
+                      ? "border-[#4f6ef7] bg-[#4f6ef7]/15 ring-1 ring-[#4f6ef7]/40 shadow-lg"
+                      : "border-white/8 bg-white/3 hover:border-white/15"
+                      }`}
                   >
                     <div>
                       <div className="flex items-center justify-between mb-1">
@@ -1944,17 +1933,15 @@ function InterviewSetupScreen({
               <div className="flex gap-2">
                 <button
                   onClick={() => setResumeSource("saved")}
-                  className={`px-3 py-1 rounded-lg text-xs font-medium cursor-pointer transition-all ${
-                    resumeSource === "saved" ? "bg-[#4f6ef7] text-white" : "bg-white/5 text-white/40 hover:text-white"
-                  }`}
+                  className={`px-3 py-1 rounded-lg text-xs font-medium cursor-pointer transition-all ${resumeSource === "saved" ? "bg-[#4f6ef7] text-white" : "bg-white/5 text-white/40 hover:text-white"
+                    }`}
                 >
                   Saved Resumes ({savedResumes.length})
                 </button>
                 <button
                   onClick={() => setResumeSource("paste")}
-                  className={`px-3 py-1 rounded-lg text-xs font-medium cursor-pointer transition-all ${
-                    resumeSource === "paste" ? "bg-[#4f6ef7] text-white" : "bg-white/5 text-white/40 hover:text-white"
-                  }`}
+                  className={`px-3 py-1 rounded-lg text-xs font-medium cursor-pointer transition-all ${resumeSource === "paste" ? "bg-[#4f6ef7] text-white" : "bg-white/5 text-white/40 hover:text-white"
+                    }`}
                 >
                   Paste Text
                 </button>
@@ -1970,11 +1957,10 @@ function InterviewSetupScreen({
                       <button
                         key={r.id}
                         onClick={() => setSelectedResumeId(r.id)}
-                        className={`p-4 rounded-xl border text-left cursor-pointer transition-all ${
-                          isSelected
-                            ? "border-[#4f6ef7] bg-[#4f6ef7]/15 ring-1 ring-[#4f6ef7]/40"
-                            : "border-white/8 bg-white/2 hover:border-white/15"
-                        }`}
+                        className={`p-4 rounded-xl border text-left cursor-pointer transition-all ${isSelected
+                          ? "border-[#4f6ef7] bg-[#4f6ef7]/15 ring-1 ring-[#4f6ef7]/40"
+                          : "border-white/8 bg-white/2 hover:border-white/15"
+                          }`}
                       >
                         <div className="flex items-center justify-between mb-1">
                           <span className="font-semibold text-sm text-white">
@@ -2044,9 +2030,8 @@ function InterviewSetupScreen({
               <button
                 key={id}
                 onClick={() => setInputMode(id as "voice" | "text")}
-                className={`flex-1 flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all cursor-pointer ${
-                  inputMode === id ? "border-[#2dd4bf] bg-[#2dd4bf]/6" : "border-white/8 bg-white/3 hover:border-white/15"
-                }`}
+                className={`flex-1 flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all cursor-pointer ${inputMode === id ? "border-[#2dd4bf] bg-[#2dd4bf]/6" : "border-white/8 bg-white/3 hover:border-white/15"
+                  }`}
               >
                 <Icon className={`w-5 h-5 ${inputMode === id ? "text-[#2dd4bf]" : "text-white/40"}`} />
                 <div>
@@ -2115,19 +2100,19 @@ function InterviewLiveScreen({
 
     const doSpeak = (voices: SpeechSynthesisVoice[]) => {
       const utter = new SpeechSynthesisUtterance(text);
-      utter.lang  = "en-US";
-      utter.rate  = 0.93;  // slightly slower = clearer for interview context
+      utter.lang = "en-US";
+      utter.rate = 0.93;  // slightly slower = clearer for interview context
       utter.pitch = 1.05;
       const preferred = voices.find(
         (v) =>
           v.lang.startsWith("en") &&
           (v.name.includes("Google") || v.name.includes("Natural") ||
-           v.name.includes("Samantha") || v.name.includes("Alex") ||
-           v.name.includes("Zira") || v.name.includes("David"))
+            v.name.includes("Samantha") || v.name.includes("Alex") ||
+            v.name.includes("Zira") || v.name.includes("David"))
       ) ?? voices.find((v) => v.lang.startsWith("en"));
       if (preferred) utter.voice = preferred;
       utter.onstart = () => setIsSpeaking(true);
-      utter.onend   = () => setIsSpeaking(false);
+      utter.onend = () => setIsSpeaking(false);
       utter.onerror = () => setIsSpeaking(false);
       synth.speak(utter);
     };
@@ -2192,7 +2177,7 @@ function InterviewLiveScreen({
       if (recognitionRef.current === r) {
         setRecording((prev) => {
           if (prev) {
-            try { r.start(); } catch {}
+            try { r.start(); } catch { }
           }
           return prev;
         });
@@ -2354,27 +2339,24 @@ function InterviewLiveScreen({
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#4f6ef7] to-[#2dd4bf]" />
                 <div className="flex items-center gap-3 mb-5">
                   <div className="relative">
-                    <div className={`w-12 h-12 rounded-full bg-gradient-to-br from-[#4f6ef7] to-[#818cf8] flex items-center justify-center transition-all ${
-                      isSpeaking ? "shadow-lg shadow-[#4f6ef7]/40" : ""
-                    }`}>
+                    <div className={`w-12 h-12 rounded-full bg-gradient-to-br from-[#4f6ef7] to-[#818cf8] flex items-center justify-center transition-all ${isSpeaking ? "shadow-lg shadow-[#4f6ef7]/40" : ""
+                      }`}>
                       <Brain className="w-6 h-6 text-white" />
                     </div>
-                    <div className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-[#0d1730] ${
-                      isSpeaking ? "bg-blue-400 animate-pulse" : "bg-green-400"
-                    }`} />
+                    <div className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-[#0d1730] ${isSpeaking ? "bg-blue-400 animate-pulse" : "bg-green-400"
+                      }`} />
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-white">Alex — AI Interviewer</p>
-                    <p className={`text-xs ${
-                      questionLoading ? "text-white/40" :
+                    <p className={`text-xs ${questionLoading ? "text-white/40" :
                       isSpeaking ? "text-blue-400" :
-                      recording ? "text-white/40" :
-                      "text-green-400"
-                    }`}>
+                        recording ? "text-white/40" :
+                          "text-green-400"
+                      }`}>
                       {questionLoading ? "Thinking..." :
-                       isSpeaking ? "Speaking — listen carefully" :
-                       recording ? "Listening to you..." :
-                       "Ready for your answer"}
+                        isSpeaking ? "Speaking — listen carefully" :
+                          recording ? "Listening to you..." :
+                            "Ready for your answer"}
                     </p>
                   </div>
                 </div>
@@ -2397,17 +2379,17 @@ function InterviewLiveScreen({
                 <div className="mt-4 flex items-center gap-2 text-xs text-white/30">
                   {isSpeaking
                     ? <>
-                        <div className="flex items-center gap-0.5">
-                          {[3,5,4,6,3].map((h,i) => (
-                            <div key={i} className="w-0.5 bg-blue-400 rounded-full animate-pulse" style={{height:`${h*2}px`, animationDelay:`${i*0.1}s`}} />
-                          ))}
-                        </div>
-                        <span className="text-blue-400">Alex is speaking{muted ? " (muted)" : ""}</span>
-                      </>
+                      <div className="flex items-center gap-0.5">
+                        {[3, 5, 4, 6, 3].map((h, i) => (
+                          <div key={i} className="w-0.5 bg-blue-400 rounded-full animate-pulse" style={{ height: `${h * 2}px`, animationDelay: `${i * 0.1}s` }} />
+                        ))}
+                      </div>
+                      <span className="text-blue-400">Alex is speaking{muted ? " (muted)" : ""}</span>
+                    </>
                     : <>
-                        <Headphones className="w-3.5 h-3.5" />
-                        <span>{muted ? "Audio muted — question shown above" : "Listen, then tap the mic to answer"}</span>
-                      </>
+                      <Headphones className="w-3.5 h-3.5" />
+                      <span>{muted ? "Audio muted — question shown above" : "Listen, then tap the mic to answer"}</span>
+                    </>
                   }
                 </div>
               </Card>
@@ -2457,11 +2439,10 @@ function InterviewLiveScreen({
                     <button
                       onClick={toggleRecording}
                       disabled={questionLoading}
-                      className={`relative w-20 h-20 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 cursor-pointer disabled:opacity-40 ${
-                        recording
-                          ? "bg-red-500 shadow-red-500/30 scale-110"
-                          : "bg-[#4f6ef7] shadow-[#4f6ef7]/30 hover:scale-105"
-                      }`}
+                      className={`relative w-20 h-20 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 cursor-pointer disabled:opacity-40 ${recording
+                        ? "bg-red-500 shadow-red-500/30 scale-110"
+                        : "bg-[#4f6ef7] shadow-[#4f6ef7]/30 hover:scale-105"
+                        }`}
                     >
                       <Mic2 className="w-8 h-8 text-white" />
                     </button>
@@ -2470,8 +2451,8 @@ function InterviewLiveScreen({
                     {!voiceSupported
                       ? "Voice not supported in this browser — type below"
                       : recording
-                      ? "Tap to stop · Speaking..."
-                      : "Tap mic to start speaking"}
+                        ? "Tap to stop · Speaking..."
+                        : "Tap mic to start speaking"}
                   </p>
 
                   {/* Live interim transcript preview */}
@@ -2593,9 +2574,8 @@ function InterviewFeedbackScreen({
           <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-white mb-4">Improvement Points</h3>
           <div className="space-y-3">
             {evaluation.feedback.map((text, i) => (
-              <div key={i} className={`flex items-start gap-3 p-3.5 rounded-xl border ${
-                i === evaluation.feedback.length - 1 ? "bg-green-500/6 border-green-500/15" : "bg-amber-500/6 border-amber-500/15"
-              }`}>
+              <div key={i} className={`flex items-start gap-3 p-3.5 rounded-xl border ${i === evaluation.feedback.length - 1 ? "bg-green-500/6 border-green-500/15" : "bg-amber-500/6 border-amber-500/15"
+                }`}>
                 {i === evaluation.feedback.length - 1
                   ? <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                   : <AlertCircle className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" />}
@@ -2937,11 +2917,10 @@ function ProjectUploadScreen({
 
         {tab === "upload" ? (
           <div
-            className={`border-2 border-dashed rounded-2xl p-14 text-center mb-6 transition-colors cursor-pointer ${
-              isDragging
-                ? "border-blue-500 bg-blue-500/10"
-                : "border-white/10 hover:border-white/20"
-            }`}
+            className={`border-2 border-dashed rounded-2xl p-14 text-center mb-6 transition-colors cursor-pointer ${isDragging
+              ? "border-blue-500 bg-blue-500/10"
+              : "border-white/10 hover:border-white/20"
+              }`}
             onClick={() => fileInputRef.current?.click()}
             onDragOver={(e) => {
               e.preventDefault();
@@ -3025,9 +3004,8 @@ function ProjectUploadScreen({
             <div className="space-y-3">
               {steps.map((s, i) => (
                 <div key={s} className="flex items-center gap-3">
-                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${
-                    i < step ? "bg-[#2dd4bf] border-[#2dd4bf]" : i === step ? "border-[#4f6ef7]" : "border-white/15"
-                  }`}>
+                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${i < step ? "bg-[#2dd4bf] border-[#2dd4bf]" : i === step ? "border-[#4f6ef7]" : "border-white/15"
+                    }`}>
                     {i < step && <Check className="w-3 h-3 text-[#060d1f]" />}
                     {i === step && <div className="w-1.5 h-1.5 rounded-full bg-[#4f6ef7] animate-pulse" />}
                   </div>
@@ -3159,8 +3137,8 @@ function ProjectResultsScreen({
                 matched?.difficulty === "hard"
                   ? "bg-red-500/10 text-red-400 border-red-500/20"
                   : matched?.difficulty === "medium"
-                  ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
-                  : "bg-green-500/10 text-green-400 border-green-500/20";
+                    ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
+                    : "bg-green-500/10 text-green-400 border-green-500/20";
 
               return (
                 <div key={i} className="border border-white/7 rounded-xl overflow-hidden bg-white/2">
@@ -3426,9 +3404,8 @@ function HistoryScreen({
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-4 py-1.5 rounded-lg text-xs font-medium capitalize cursor-pointer transition-all ${
-                  filter === f ? "bg-[#4f6ef7] text-white shadow-md shadow-[#4f6ef7]/20" : "text-white/40 hover:text-white"
-                }`}
+                className={`px-4 py-1.5 rounded-lg text-xs font-medium capitalize cursor-pointer transition-all ${filter === f ? "bg-[#4f6ef7] text-white shadow-md shadow-[#4f6ef7]/20" : "text-white/40 hover:text-white"
+                  }`}
               >
                 {f}
               </button>
@@ -3460,9 +3437,8 @@ function HistoryScreen({
                     <tr key={row.id} className="border-b border-white/4 hover:bg-white/2 transition-colors">
                       <td className="py-3.5 px-3 text-white/50 text-xs font-['JetBrains_Mono']">{row.date}</td>
                       <td className="py-3.5 px-3">
-                        <span className={`px-2 py-0.5 rounded-md text-xs font-medium ${
-                          row.type === "Quiz" ? "bg-violet-500/15 text-violet-300" : "bg-teal-500/15 text-teal-300"
-                        }`}>
+                        <span className={`px-2 py-0.5 rounded-md text-xs font-medium ${row.type === "Quiz" ? "bg-violet-500/15 text-violet-300" : "bg-teal-500/15 text-teal-300"
+                          }`}>
                           {row.type}
                         </span>
                       </td>
@@ -3502,11 +3478,10 @@ function HistoryScreen({
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-white/8 bg-[#091024]">
               <div className="flex items-center gap-3">
-                <span className={`px-3 py-1 rounded-lg text-xs font-semibold ${
-                  selectedRow.type === "Quiz"
-                    ? "bg-violet-500/20 text-violet-300 border border-violet-500/30"
-                    : "bg-teal-500/20 text-teal-300 border border-teal-500/30"
-                }`}>
+                <span className={`px-3 py-1 rounded-lg text-xs font-semibold ${selectedRow.type === "Quiz"
+                  ? "bg-violet-500/20 text-violet-300 border border-violet-500/30"
+                  : "bg-teal-500/20 text-teal-300 border border-teal-500/30"
+                  }`}>
                   {selectedRow.type} Report
                 </span>
                 <span className="text-white/40 text-xs font-['JetBrains_Mono']">{selectedRow.date}</span>
@@ -3536,9 +3511,8 @@ function HistoryScreen({
                     />
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className={`text-lg font-bold font-['JetBrains_Mono'] ${
-                      selectedRow.score >= 80 ? "text-[#2dd4bf]" : selectedRow.score >= 60 ? "text-amber-400" : "text-red-400"
-                    }`}>{selectedRow.score}%</span>
+                    <span className={`text-lg font-bold font-['JetBrains_Mono'] ${selectedRow.score >= 80 ? "text-[#2dd4bf]" : selectedRow.score >= 60 ? "text-amber-400" : "text-red-400"
+                      }`}>{selectedRow.score}%</span>
                   </div>
                 </div>
                 <div className="flex-1 text-center sm:text-left">
@@ -3560,21 +3534,19 @@ function HistoryScreen({
               </div>
 
               {/* Recommendation */}
-              <div className={`rounded-xl p-4 border ${
-                selectedRow.score >= 80
-                  ? "bg-teal-500/8 border-teal-500/20"
-                  : selectedRow.score >= 60
+              <div className={`rounded-xl p-4 border ${selectedRow.score >= 80
+                ? "bg-teal-500/8 border-teal-500/20"
+                : selectedRow.score >= 60
                   ? "bg-amber-500/8 border-amber-500/20"
                   : "bg-red-500/8 border-red-500/20"
-              }`}>
-                <p className={`text-sm font-semibold mb-1 ${
-                  selectedRow.score >= 80 ? "text-teal-300" : selectedRow.score >= 60 ? "text-amber-300" : "text-red-300"
                 }`}>
+                <p className={`text-sm font-semibold mb-1 ${selectedRow.score >= 80 ? "text-teal-300" : selectedRow.score >= 60 ? "text-amber-300" : "text-red-300"
+                  }`}>
                   {selectedRow.score >= 80
                     ? "🎉 Strong performance — keep it up!"
                     : selectedRow.score >= 60
-                    ? "📈 Good start — a bit more practice recommended"
-                    : "📚 Score below 60% — focused review needed"}
+                      ? "📈 Good start — a bit more practice recommended"
+                      : "📚 Score below 60% — focused review needed"}
                 </p>
                 <p className="text-xs text-white/40">
                   {selectedRow.type === "Quiz"
@@ -3582,8 +3554,8 @@ function HistoryScreen({
                       ? "Try a harder difficulty or a different topic to keep improving."
                       : "Retake this quiz or try an interview session on the same topic."
                     : selectedRow.score >= 80
-                    ? "Great interview performance. Try a project analysis next."
-                    : "Practice more interview questions on this topic to improve your scores."}
+                      ? "Great interview performance. Try a project analysis next."
+                      : "Practice more interview questions on this topic to improve your scores."}
                 </p>
               </div>
 
@@ -3611,13 +3583,12 @@ function HistoryScreen({
                         return (
                           <div
                             key={idx}
-                            className={`p-4 rounded-xl border transition-all ${
-                              isCorrect
-                                ? "bg-green-500/5 border-green-500/20"
-                                : isIncorrect
+                            className={`p-4 rounded-xl border transition-all ${isCorrect
+                              ? "bg-green-500/5 border-green-500/20"
+                              : isIncorrect
                                 ? "bg-red-500/5 border-red-500/20"
                                 : "bg-blue-500/5 border-blue-500/20"
-                            }`}
+                              }`}
                           >
                             {/* Header */}
                             <div className="flex items-center justify-between gap-3 mb-2.5">
@@ -4030,13 +4001,12 @@ function ProfileScreen({ navigate, user }: { navigate: (s: Screen) => void; user
                     onClick={() => {
                       setDifficulty(d);
                     }}
-                    className={`px-5 py-2 rounded-xl text-sm font-medium border capitalize cursor-pointer transition-all ${
-                      difficulty === d
-                        ? d === "easy" ? "bg-green-500/15 border-green-500/30 text-green-400"
-                          : d === "medium" ? "bg-amber-500/15 border-amber-500/30 text-amber-400"
+                    className={`px-5 py-2 rounded-xl text-sm font-medium border capitalize cursor-pointer transition-all ${difficulty === d
+                      ? d === "easy" ? "bg-green-500/15 border-green-500/30 text-green-400"
+                        : d === "medium" ? "bg-amber-500/15 border-amber-500/30 text-amber-400"
                           : "bg-red-500/15 border-red-500/30 text-red-400"
-                        : "bg-white/3 border-white/8 text-white/50 hover:border-white/15"
-                    }`}
+                      : "bg-white/3 border-white/8 text-white/50 hover:border-white/15"
+                      }`}
                   >
                     {d}
                   </button>
@@ -4180,7 +4150,7 @@ export default function App() {
   // Listen for global session expiration events dispatched by apiFetch
   useEffect(() => {
     const handleSessionExpired = () => {
-      supabase.auth.signOut().catch(() => {});
+      supabase.auth.signOut().catch(() => { });
       setUser(null);
       setScreen("auth");
     };
@@ -4317,10 +4287,10 @@ export default function App() {
       const mode = (topic.toLowerCase().includes("hr") || topic.toLowerCase().includes("behavioral"))
         ? "hr"
         : topic.toLowerCase().includes("project")
-        ? "project"
-        : topic.toLowerCase().includes("resume")
-        ? "resume"
-        : "technical";
+          ? "project"
+          : topic.toLowerCase().includes("resume")
+            ? "resume"
+            : "technical";
       setPrefilledInterviewMode(mode);
       setPrefilledInterviewTopic(topic);
       navigate("interview-setup");
