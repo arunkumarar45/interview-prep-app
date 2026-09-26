@@ -3995,7 +3995,7 @@ function ProfileScreen({ navigate, user }: { navigate: (s: Screen) => void; user
             <div>
               <label className="block text-sm text-white/50 mb-3">Default difficulty</label>
               <div className="flex gap-3">
-                {["easy", "medium", "hard"].map((d) => (
+                {(["easy", "medium", "hard"] as const).map((d) => (
                   <button
                     key={d}
                     onClick={() => {
@@ -4017,8 +4017,8 @@ function ProfileScreen({ navigate, user }: { navigate: (s: Screen) => void; user
               <label className="block text-sm text-white/50 mb-3">Default response mode</label>
               <div className="flex gap-3">
                 {[
-                  { id: "voice", label: "Voice mode", icon: Mic2 },
-                  { id: "text", label: "Text mode", icon: FileText },
+                  { id: "voice" as const, label: "Voice mode", icon: Mic2 },
+                  { id: "text" as const, label: "Text mode", icon: FileText },
                 ].map(({ id, label, icon: Icon }) => (
                   <button
                     key={id}
