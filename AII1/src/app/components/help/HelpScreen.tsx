@@ -7,7 +7,7 @@ import { useState } from "react";
 import {
   BookOpen, Brain, MessageSquare, FolderGit2, FileText,
   Award, Key, CheckCircle2, ChevronRight, ExternalLink,
-  Shield, Sparkles, HelpCircle, ArrowRight, Zap
+  Shield, Sparkles, HelpCircle, ArrowRight, Zap, AlertCircle
 } from "lucide-react";
 
 interface HelpScreenProps {

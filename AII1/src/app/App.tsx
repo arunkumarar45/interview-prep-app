@@ -163,7 +163,7 @@ function Btn({
   children, onClick, variant = "primary", size = "md", className = "", disabled = false, id
 }: {
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   variant?: "primary" | "secondary" | "ghost" | "teal" | "danger";
   size?: "sm" | "md" | "lg";
   className?: string;
