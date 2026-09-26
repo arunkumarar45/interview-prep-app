@@ -2971,7 +2971,7 @@ function ProjectUploadScreen({
                 <Btn
                   variant="secondary"
                   size="sm"
-                  onClick={(e) => {
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
                     setSelectedFile(null);
                     if (fileInputRef.current) fileInputRef.current.value = "";
