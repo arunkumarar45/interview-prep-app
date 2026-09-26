@@ -602,7 +602,10 @@ function AuthScreen({ navigate, initialMessage }: { navigate: (s: Screen) => voi
         const { error: e } = await supabase.auth.signUp({
           email: email.trim(),
           password,
-          options: { data: { full_name: fullName.trim() || undefined } },
+          options: {
+            data: { full_name: fullName.trim() || undefined },
+            emailRedirectTo: window.location.origin,
+          },
         });
         if (e) throw e;
       } else {
