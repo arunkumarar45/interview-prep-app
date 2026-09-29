@@ -261,98 +261,183 @@ function UserAvatar({ user, size = "md" }: { user: User | null; size?: "sm" | "m
   );
 }
 
-function Sidebar({ current, navigate, streak, user }: { current: Screen; navigate: (s: Screen) => void; streak: number; user: User | null }) {
+function Sidebar({ current, navigate, streak, user, open, onClose }: { current: Screen; navigate: (s: Screen) => void; streak: number; user: User | null; open?: boolean; onClose?: () => void }) {
+  const handleNav = (s: Screen) => {
+    navigate(s as Screen);
+    onClose?.();
+  };
   return (
-    <aside className="w-60 min-h-screen bg-[#0a1428] border-r border-white/5 flex flex-col py-6 shrink-0">
-      <div className="px-5 mb-8">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-[#4f6ef7] flex items-center justify-center shadow-lg shadow-[#4f6ef7]/30">
-            <Brain className="w-4 h-4 text-white" />
+    <>
+      {/* Mobile overlay */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+      <aside className={`
+        fixed lg:static inset-y-0 left-0 z-50 lg:z-auto
+        w-60 min-h-screen bg-[#0a1428] border-r border-white/5 flex flex-col py-6 shrink-0
+        transform transition-transform duration-300 ease-in-out
+        ${open ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
+      `}>
+        <div className="px-5 mb-8 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-[#4f6ef7] flex items-center justify-center shadow-lg shadow-[#4f6ef7]/30">
+              <Brain className="w-4 h-4 text-white" />
+            </div>
+            <span className="font-['Plus_Jakarta_Sans'] font-bold text-white text-sm tracking-tight">InterviewPrep AI</span>
           </div>
-          <span className="font-['Plus_Jakarta_Sans'] font-bold text-white text-sm tracking-tight">InterviewPrep AI</span>
+          <button onClick={onClose} className="lg:hidden text-white/40 hover:text-white p-1 cursor-pointer">
+            <X className="w-5 h-5" />
+          </button>
         </div>
-      </div>
 
-      <nav className="flex-1 px-3 space-y-0.5">
-        {NAV_ITEMS.map(({ icon: Icon, label, screen }) => {
-          const active = current === screen ||
-            (screen === "quiz-select" && ["quiz-select", "quiz-progress", "quiz-results"].includes(current)) ||
-            (screen === "interview-setup" && ["interview-setup", "interview-live", "interview-feedback", "interview-summary"].includes(current)) ||
-            (screen === "project-upload" && ["project-upload", "project-results"].includes(current)) ||
-            (screen === "resume-home" && ["resume-home", "resume-upload", "resume-gallery", "resume-editor"].includes(current));
-          return (
-            <button
-              key={screen}
-              onClick={() => navigate(screen as Screen)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 text-left cursor-pointer ${active
-                ? "bg-[#4f6ef7]/15 text-[#818cf8] border border-[#4f6ef7]/20"
-                : "text-white/50 hover:text-white/80 hover:bg-white/5"
+        <nav className="flex-1 px-3 space-y-0.5">
+          {NAV_ITEMS.map(({ icon: Icon, label, screen }) => {
+            const active = current === screen ||
+              (screen === "quiz-select" && ["quiz-select", "quiz-progress", "quiz-results"].includes(current)) ||
+              (screen === "interview-setup" && ["interview-setup", "interview-live", "interview-feedback", "interview-summary"].includes(current)) ||
+              (screen === "project-upload" && ["project-upload", "project-results"].includes(current)) ||
+              (screen === "resume-home" && ["resume-home", "resume-upload", "resume-gallery", "resume-editor"].includes(current));
+            return (
+              <button
+                key={screen}
+                onClick={() => handleNav(screen as Screen)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 text-left cursor-pointer ${
+                  active
+                    ? "bg-[#4f6ef7]/15 text-[#818cf8] border border-[#4f6ef7]/20"
+                    : "text-white/50 hover:text-white/80 hover:bg-white/5"
                 }`}
+              >
+                <Icon className={`w-4 h-4 ${active ? "text-[#4f6ef7]" : ""}`} />
+                {label}
+              </button>
+            );
+          })}
+        </nav>
+
+        <div className="px-3 mt-4 space-y-1 border-t border-white/5 pt-4">
+          {user && (
+            <button
+              onClick={() => handleNav("profile")}
+              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 transition-all cursor-pointer group mb-1"
             >
-              <Icon className={`w-4 h-4 ${active ? "text-[#4f6ef7]" : ""}`} />
-              {label}
+              <UserAvatar user={user} size="sm" />
+              <div className="flex-1 min-w-0 text-left">
+                <p className="text-xs font-semibold text-white/80 truncate group-hover:text-white transition-colors">
+                  {user.user_metadata?.full_name || user.user_metadata?.name || "My Profile"}
+                </p>
+                <p className="text-[10px] text-white/30 truncate">{user.email}</p>
+              </div>
+            </button>
+          )}
+          <button
+            onClick={() => handleNav("settings")}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/40 hover:text-white/70 hover:bg-white/5 transition-all cursor-pointer"
+          >
+            <Settings className="w-4 h-4" />
+            Settings
+          </button>
+          <button
+            onClick={async () => {
+              await supabase.auth.signOut();
+              handleNav("landing");
+            }}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/40 hover:text-red-400 hover:bg-red-500/5 transition-all cursor-pointer"
+          >
+            <LogOut className="w-4 h-4" />
+            Sign out
+          </button>
+        </div>
+
+        {streak > 0 && (
+          <div className="px-4 mt-4">
+            <div className="bg-[#1a253d]/60 rounded-xl p-3 border border-white/5">
+              <div className="flex items-center gap-2">
+                <Flame className="w-4 h-4 text-orange-400" />
+                <span className="text-xs font-semibold text-white/80">{streak}-day streak</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </aside>
+    </>
+  );
+}
+
+// Mobile bottom nav — shows 5 key items on small screens
+const MOBILE_NAV = [
+  { icon: LayoutDashboard, label: "Home", screen: "dashboard" },
+  { icon: BookOpen, label: "Quiz", screen: "quiz-select" },
+  { icon: Mic2, label: "Interview", screen: "interview-setup" },
+  { icon: FileText, label: "Resume", screen: "resume-home" },
+  { icon: Menu, label: "More", screen: "__menu__" },
+] as const;
+
+function BottomNav({ current, navigate, onMenuOpen }: { current: Screen; navigate: (s: Screen) => void; onMenuOpen: () => void }) {
+  return (
+    <nav className="fixed bottom-0 left-0 right-0 z-30 lg:hidden bg-[#0a1428]/95 backdrop-blur border-t border-white/8 flex items-center justify-around px-2 py-2 safe-area-pb">
+      {MOBILE_NAV.map(({ icon: Icon, label, screen }) => {
+        if (screen === "__menu__") {
+          return (
+            <button key="menu" onClick={onMenuOpen} className="flex flex-col items-center gap-1 px-3 py-1 text-white/40 cursor-pointer">
+              <Menu className="w-5 h-5" />
+              <span className="text-[10px] font-medium">More</span>
             </button>
           );
-        })}
-      </nav>
-
-      <div className="px-3 mt-4 space-y-1 border-t border-white/5 pt-4">
-        {/* User identity pill */}
-        {user && (
+        }
+        const active = current === screen ||
+          (screen === "quiz-select" && ["quiz-select", "quiz-progress", "quiz-results"].includes(current)) ||
+          (screen === "interview-setup" && ["interview-setup", "interview-live", "interview-feedback", "interview-summary"].includes(current)) ||
+          (screen === "resume-home" && ["resume-home", "resume-upload", "resume-gallery", "resume-editor"].includes(current));
+        return (
           <button
-            onClick={() => navigate("profile")}
-            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 transition-all cursor-pointer group mb-1"
+            key={screen}
+            onClick={() => navigate(screen as Screen)}
+            className={`flex flex-col items-center gap-1 px-3 py-1 rounded-xl transition-all cursor-pointer ${
+              active ? "text-[#818cf8]" : "text-white/40"
+            }`}
           >
-            <UserAvatar user={user} size="sm" />
-            <div className="flex-1 min-w-0 text-left">
-              <p className="text-xs font-semibold text-white/80 truncate group-hover:text-white transition-colors">
-                {user.user_metadata?.full_name || user.user_metadata?.name || "My Profile"}
-              </p>
-              <p className="text-[10px] text-white/30 truncate">{user.email}</p>
-            </div>
+            <Icon className={`w-5 h-5 ${active ? "text-[#4f6ef7]" : ""}`} />
+            <span className="text-[10px] font-medium">{label}</span>
           </button>
-        )}
-        <button
-          onClick={() => navigate("settings")}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/40 hover:text-white/70 hover:bg-white/5 transition-all cursor-pointer"
-        >
-          <Settings className="w-4 h-4" />
-          Settings
-        </button>
-        <button
-          onClick={async () => {
-            await supabase.auth.signOut();
-            navigate("landing");
-          }}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/40 hover:text-red-400 hover:bg-red-500/5 transition-all cursor-pointer"
-        >
-          <LogOut className="w-4 h-4" />
-          Sign out
-        </button>
-      </div>
-
-      {/* Real streak from DB — only shown if user has activity */}
-      {streak > 0 && (
-        <div className="px-4 mt-4">
-          <div className="bg-[#1a253d]/60 rounded-xl p-3 border border-white/5">
-            <div className="flex items-center gap-2">
-              <Flame className="w-4 h-4 text-orange-400" />
-              <span className="text-xs font-semibold text-white/80">{streak}-day streak</span>
-            </div>
-          </div>
-        </div>
-      )}
-    </aside>
+        );
+      })}
+    </nav>
   );
 }
 
 function AppLayout({ screen, navigate, streak, user, children }: { screen: Screen; navigate: (s: Screen) => void; streak?: number; user?: User | null; children: React.ReactNode }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div className="flex min-h-screen bg-[#060d1f]">
-      <Sidebar current={screen} navigate={navigate} streak={streak ?? 0} user={user ?? null} />
-      <main className="flex-1 overflow-auto">
+      {/* Desktop sidebar */}
+      <Sidebar
+        current={screen}
+        navigate={navigate}
+        streak={streak ?? 0}
+        user={user ?? null}
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+      <main className="flex-1 overflow-auto pb-20 lg:pb-0">
+        {/* Mobile top bar */}
+        <div className="lg:hidden flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#0a1428] sticky top-0 z-20">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-[#4f6ef7] flex items-center justify-center">
+              <Brain className="w-3.5 h-3.5 text-white" />
+            </div>
+            <span className="font-['Plus_Jakarta_Sans'] font-bold text-white text-sm">InterviewPrep AI</span>
+          </div>
+          <button onClick={() => setSidebarOpen(true)} className="text-white/60 hover:text-white p-1 cursor-pointer">
+            <Menu className="w-5 h-5" />
+          </button>
+        </div>
         {children}
       </main>
+      {/* Mobile bottom navigation */}
+      <BottomNav current={screen} navigate={navigate} onMenuOpen={() => setSidebarOpen(true)} />
     </div>
   );
 }
@@ -397,7 +482,7 @@ function LandingScreen({ navigate }: { navigate: (s: Screen) => void }) {
       </div>
 
       {/* Nav */}
-      <nav className="relative z-10 flex items-center justify-between px-10 py-5 border-b border-white/5">
+      <nav className="relative z-10 flex items-center justify-between px-4 sm:px-10 py-5 border-b border-white/5">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-[#4f6ef7] flex items-center justify-center shadow-lg shadow-[#4f6ef7]/30">
             <Brain className="w-4 h-4 text-white" />
@@ -417,7 +502,7 @@ function LandingScreen({ navigate }: { navigate: (s: Screen) => void }) {
       </nav>
 
       {/* Hero */}
-      <section className="relative z-10 max-w-5xl mx-auto px-10 pt-24 pb-20 text-center">
+      <section className="relative z-10 max-w-5xl mx-auto px-4 sm:px-10 pt-16 sm:pt-24 pb-16 sm:pb-20 text-center">
         <div className="inline-flex items-center gap-2 bg-[#4f6ef7]/10 border border-[#4f6ef7]/20 rounded-full px-4 py-1.5 text-sm text-[#818cf8] mb-8">
           <Sparkles className="w-3.5 h-3.5" />
           AI-powered interview practice for CS students
@@ -448,7 +533,7 @@ function LandingScreen({ navigate }: { navigate: (s: Screen) => void }) {
       </section>
 
       {/* Features */}
-      <section className="relative z-10 max-w-6xl mx-auto px-10 pb-24">
+      <section className="relative z-10 max-w-6xl mx-auto px-4 sm:px-10 pb-24">
         <div className="text-center mb-14">
           <h2 className="font-['Plus_Jakarta_Sans'] text-3xl font-bold text-white mb-3">Everything you need to crack it</h2>
           <p className="text-white/40">Three powerful tools built for your success</p>
@@ -484,7 +569,7 @@ function LandingScreen({ navigate }: { navigate: (s: Screen) => void }) {
 
       {/* Key capability callouts */}
       <section className="relative z-10 border-y border-white/5 py-16">
-        <div className="max-w-4xl mx-auto px-10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
               { num: "5 Topics", label: "Core CS subjects" },
@@ -522,7 +607,7 @@ function LandingScreen({ navigate }: { navigate: (s: Screen) => void }) {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-white/5 py-8 px-10">
+      <footer className="relative z-10 border-t border-white/5 py-8 px-4 sm:px-10">
         <div className="max-w-6xl mx-auto flex items-center justify-between text-sm text-white/30">
           <span>© 2025 InterviewPrep AI. All rights reserved.</span>
           <div className="flex gap-5">
@@ -977,7 +1062,7 @@ function DashboardScreen({ navigate, user }: { navigate: (s: Screen) => void; us
 
   return (
     <AppLayout screen="dashboard" navigate={navigate} streak={stats.streak}>
-      <div className="max-w-6xl mx-auto px-8 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 py-6 sm:py-8">
         {/* Header */}
         <div className="flex items-start justify-between mb-8">
           <div>
@@ -993,7 +1078,7 @@ function DashboardScreen({ navigate, user }: { navigate: (s: Screen) => void; us
         </div>
 
         {/* Stats row */}
-        <div className="grid grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {[
             { label: "Questions practiced", val: loading ? "..." : stats.questionsPracticed.toLocaleString(), icon: Target, color: "text-[#818cf8]", bg: "bg-violet-500/10" },
             { label: "Avg quiz score", val: loading ? "..." : `${stats.avgQuizScore}%`, icon: BarChart3, color: "text-[#2dd4bf]", bg: "bg-teal-500/10" },
@@ -1010,9 +1095,9 @@ function DashboardScreen({ navigate, user }: { navigate: (s: Screen) => void; us
           ))}
         </div>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: weak topics + quick start */}
-          <div className="col-span-2 space-y-6">
+          <div className="col-span-1 lg:col-span-2 space-y-6">
             {/* Weak topics */}
             <Card className="p-6">
               <div className="flex items-center justify-between mb-5">
@@ -1057,7 +1142,7 @@ function DashboardScreen({ navigate, user }: { navigate: (s: Screen) => void; us
             {/* Quick start */}
             <Card className="p-6">
               <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-white mb-5">Quick Start</h3>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {[
                   { label: "Take a Quiz", desc: "Choose count & topic", icon: BookOpen, color: "text-violet-400", bg: "bg-violet-500/10", screen: "quiz-select" },
                   { label: "Start Mock Interview", desc: "AI live voice session", icon: Mic2, color: "text-[#2dd4bf]", bg: "bg-teal-500/10", screen: "interview-setup" },
@@ -1238,7 +1323,7 @@ function QuizSelectScreen({
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-5 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
           {/* Upload PDF */}
           <button
             onClick={() => setMode("upload")}
@@ -1374,7 +1459,7 @@ function QuizSelectScreen({
         )}
 
         {/* Options: Difficulty & Question Count */}
-        <div className="grid grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
           {/* Difficulty */}
           <div>
             <label className="block text-sm text-white/50 mb-3">Difficulty</label>
@@ -2351,7 +2436,7 @@ function InterviewLiveScreen({
             )}
 
             {/* AI + User side by side */}
-            <div className="grid grid-cols-2 gap-5 flex-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 flex-1">
               {/* AI Interviewer */}
               <Card className="p-6 flex flex-col relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#4f6ef7] to-[#2dd4bf]" />
@@ -2751,7 +2836,7 @@ function InterviewSummaryScreen({
         ) : (
           <>
             {/* Score breakdown */}
-            <div className="grid grid-cols-2 gap-5 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
               <Card className="p-7">
                 <div className="flex items-center gap-2 mb-4">
                   <Brain className="w-5 h-5 text-[#818cf8]" />
@@ -2773,7 +2858,7 @@ function InterviewSummaryScreen({
             </div>
 
             {/* Strengths & Improvements */}
-            <div className="grid grid-cols-2 gap-5 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
               <Card className="p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <CheckCircle2 className="w-4 h-4 text-green-400" />
