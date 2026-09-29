@@ -13,4 +13,14 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    // PKCE is the recommended flow for SPAs — more secure than implicit flow
+    // and works correctly after OAuth redirects in production.
+    flowType: "pkce",
+    // Auto-detect the session from the URL hash/query params on OAuth callback.
+    detectSessionInUrl: true,
+    // Persist the session in localStorage so it survives page refreshes.
+    persistSession: true,
+  },
+});
