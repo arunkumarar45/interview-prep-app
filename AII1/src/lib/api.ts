@@ -78,7 +78,6 @@ export async function apiFetch<T>(
       isRefreshing = true;
       try {
         const { data, error } = await supabase.auth.refreshSession();
-        isRefreshing = false;
         if (!error && data?.session) {
           authHeaders = await getAuthHeaders(isFormData);
           headers = {
@@ -91,6 +90,8 @@ export async function apiFetch<T>(
           });
         }
       } catch {
+        // ignore
+      } finally {
         isRefreshing = false;
       }
     }
@@ -102,11 +103,18 @@ export async function apiFetch<T>(
   }
 
   if (!response.ok) {
-    // Parse the server's error body if possible; fall back to HTTP status text
+    // Parse the server's error body if possible; fall back to HTTP status text.
+    // Handle both flat { error: string } and nested { error: { message: string } } shapes.
     const body = await response
       .json()
       .catch(() => ({ error: `HTTP ${response.status}: ${response.statusText}` }));
-    throw new Error(body?.error ?? `Request to ${path} failed`);
+    const msg =
+      typeof body?.error === "string"
+        ? body.error
+        : typeof body?.error?.message === "string"
+          ? body.error.message
+          : `Request to ${path} failed`;
+    throw new Error(msg);
   }
 
   // Handle 204 No Content or zero-length bodies cleanly
@@ -140,7 +148,6 @@ export async function apiFetchBlob(
       isRefreshing = true;
       try {
         const { data, error } = await supabase.auth.refreshSession();
-        isRefreshing = false;
         if (!error && data?.session) {
           authHeaders = await getAuthHeaders(isFormData);
           headers = {
@@ -150,6 +157,8 @@ export async function apiFetchBlob(
           response = await fetch(resolveUrl(path), { ...options, headers });
         }
       } catch {
+        // ignore
+      } finally {
         isRefreshing = false;
       }
     }
@@ -164,7 +173,13 @@ export async function apiFetchBlob(
     const body = await response
       .json()
       .catch(() => ({ error: `HTTP ${response.status}: ${response.statusText}` }));
-    throw new Error(body?.error ?? `Request to ${path} failed`);
+    const msg =
+      typeof body?.error === "string"
+        ? body.error
+        : typeof body?.error?.message === "string"
+          ? body.error.message
+          : `Request to ${path} failed`;
+    throw new Error(msg);
   }
 
   return response.blob();

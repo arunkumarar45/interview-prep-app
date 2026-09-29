@@ -370,11 +370,19 @@ function GoogleIcon({ className = "w-5 h-5" }: { className?: string }) {
   );
 }
 
+function getAuthRedirectUrl(suffix = ""): string {
+  const origin =
+    typeof window !== "undefined" && window.location.origin && window.location.origin !== "null"
+      ? window.location.origin
+      : "https://interviewprepai.me";
+  return `${origin}${suffix}`;
+}
+
 async function signInWithGoogle() {
   await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: window.location.origin,
+      redirectTo: getAuthRedirectUrl(),
     },
   });
 }
@@ -543,8 +551,13 @@ function AuthScreen({ navigate, initialMessage }: { navigate: (s: Screen) => voi
 
   // Detect OAuth error params from redirect (e.g. user cancelled Google sign-in)
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const oauthError = params.get("error_description") || params.get("error");
+    const searchParams = new URLSearchParams(window.location.search);
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+    const oauthError =
+      searchParams.get("error_description") ||
+      searchParams.get("error") ||
+      hashParams.get("error_description") ||
+      hashParams.get("error");
     if (oauthError) {
       setError(oauthError.replace(/\+/g, " "));
       // Clean up URL
@@ -559,7 +572,7 @@ function AuthScreen({ navigate, initialMessage }: { navigate: (s: Screen) => voi
       const { error: e } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: getAuthRedirectUrl(),
         },
       });
       if (e) throw e;
@@ -579,7 +592,7 @@ function AuthScreen({ navigate, initialMessage }: { navigate: (s: Screen) => voi
     setError(null);
     try {
       const { error: e } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-        redirectTo: `${window.location.origin}#type=recovery`,
+        redirectTo: getAuthRedirectUrl("#type=recovery"),
       });
       if (e) throw e;
       setResetSent(true);
@@ -604,7 +617,7 @@ function AuthScreen({ navigate, initialMessage }: { navigate: (s: Screen) => voi
           password,
           options: {
             data: { full_name: fullName.trim() || undefined },
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo: getAuthRedirectUrl(),
           },
         });
         if (e) throw e;
@@ -1609,8 +1622,10 @@ function QuizResultsScreen({
     }
   };
 
-  // Auto-save on mount
-  useEffect(() => { doSave(); }, []);
+  // Auto-save on mount — use a ref-stable callback to avoid stale closure
+  const doSaveRef = useRef(doSave);
+  doSaveRef.current = doSave;
+  useEffect(() => { doSaveRef.current(); }, []);
 
   if (questions.length === 0) {
     return (
@@ -2642,12 +2657,12 @@ function InterviewSummaryScreen({
   const [saveStatus, setSaveStatus] = useState<"saving" | "saved" | "error">("saving");
   const [saveError, setSaveError] = useState<string | null>(null);
 
-  // Compute aggregate scores
+  // Compute aggregate scores — guard against undefined scores from API
   const techScore = transcript.length > 0
-    ? Math.round(transcript.reduce((s, e) => s + e.technicalScore, 0) / transcript.length)
+    ? Math.round(transcript.reduce((s, e) => s + (e.technicalScore ?? 0), 0) / transcript.length)
     : 0;
   const commScore = transcript.length > 0
-    ? Math.round(transcript.reduce((s, e) => s + e.communicationScore, 0) / transcript.length)
+    ? Math.round(transcript.reduce((s, e) => s + (e.communicationScore ?? 0), 0) / transcript.length)
     : 0;
 
   const handleSave = async () => {
@@ -4181,11 +4196,8 @@ export default function App() {
           setShowOnboarding(true);
         }
 
-        // After Google OAuth redirect, land on dashboard instead of landing/auth
-        const currentScreen = screen;
-        if (currentScreen === "landing" || currentScreen === "auth") {
-          setScreen("dashboard");
-        }
+        // After Google OAuth redirect or sign-in, land on dashboard instead of landing/auth
+        setScreen((prev) => (prev === "landing" || prev === "auth" ? "dashboard" : prev));
         // Strip OAuth code / tokens from the URL bar
         if (window.location.hash || window.location.search) {
           window.history.replaceState({}, document.title, window.location.pathname);
@@ -4200,8 +4212,8 @@ export default function App() {
         setScreen("landing");
       } else if (event === "PASSWORD_RECOVERY") {
         setScreen("reset-password");
-      } else if (event === "SIGNED_IN") {
-        // Handle fresh sign-in (email or OAuth callback)
+      } else if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+        // Handle fresh sign-in (email or OAuth callback) or restored session
         setScreen((prev) =>
           prev === "landing" || prev === "auth" ? "dashboard" : prev
         );
